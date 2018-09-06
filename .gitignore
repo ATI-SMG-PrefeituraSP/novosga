@@ -1,6 +1,9 @@
 config/app.php
 nbproject/
 modules/*
+.env.save
+config/packages/sensio_framework_extra.yaml
+public/.htaccess
 
 ###> symfony/framework-bundle ###
 .env
