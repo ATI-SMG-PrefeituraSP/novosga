@@ -1,9 +1,9 @@
 # Novo SGA
 
-Support queue management system.
+Sistema de gerenciamento de filas
 
 
-## Installation
+## Instalação
 
 ### Via Composer
 
@@ -27,12 +27,53 @@ Documentation in the Novo SGA official [docker repository](https://github.com/no
 
 ### Via Git
 
-Clone repository:
+Clonar o repositório:
 
     git clone https://github.com/novosga/novosga.git novosga2
 
-Then follow Composer install instruction.
+Rodar ```composer install``` na pasta
 
+Ajustar o arquivo .env criado com:
+
+```bash
+APP_ENV=prod
+LANGUAGE=pt_BR
+DATABASE_URL="mysql://usuario:senha@servidor:porta/nomebanco"
+```
+
+Rodar ```bin/console novosga:install``` para criar o banco de dados
+
+Rodar ```unset APP_ENV```
+
+Entrar na pasta do projeto e rodar
+```bash
+bin/console cache:clear --no-debug --no-warmup --env=prod
+bin/console cache:warmup --env=prod
+```
+
+Sair da pasta e dar permissão de acesso aos arquivos
+```bash
+chown www-data:www-data -R novosga
+chmod +w -R novosga/var/
+```
+
+Criar o arquivo .htaccess
+
+```bash
+# echo 'Options -MultiViews
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ index.php [QSA,L]
+SetEnv APP_ENV prod
+SetEnv LANGUAGE pt_BR
+SetEnv DATABASE_URL mysql://usuario:senha@servidor:porta/nomebanco
+# ' > /var/www/html/sgf/novosga/public/.htaccess
+```
+Reestartar o apache
+
+```bash
+sudo service apache2 restart
+```
 
 ### Automated installation
 
